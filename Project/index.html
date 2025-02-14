@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting System Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 10px;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Blockchain Voting System</h1>
+
+  <!-- Register Voter -->
+  <div class="container">
+    <h2>Register Voter</h2>
+    <input type="text" id="voterName" placeholder="Enter Voter Name">
+    <input type="text" id="voterId" placeholder="Enter Voter ID">
+    <button onclick="registerVoter()">Register Voter</button>
+    <div class="output" id="registerOutput"></div>
+  </div>
+
+  <!-- Verify Voter -->
+  <div class="container">
+    <h2>Verify Voter</h2>
+    <input type="text" id="verifyVoterId" placeholder="Enter Voter ID">
+    <button onclick="verifyVoter()">Verify Voter</button>
+    <div class="output" id="verifyOutput"></div>
+  </div>
+
+  <!-- Vote -->
+  <div class="container">
+    <h2>Cast Vote</h2>
+    <input type="text" id="voteVoterId" placeholder="Enter Voter ID">
+    <input type="text" id="candidateId" placeholder="Enter Candidate ID">
+    <button onclick="castVote()">Cast Vote</button>
+    <div class="output" id="voteOutput"></div>
+  </div>
+
+  <!-- Add Candidate -->
+  <div class="container">
+    <h2>Add Candidate</h2>
+    <input type="text" id="candidateName" placeholder="Enter Candidate Name">
+    <button onclick="addCandidate()">Add Candidate</button>
+    <div class="output" id="addCandidateOutput"></div>
+  </div>
+
+  <!-- List Candidates -->
+  <div class="container">
+    <h2>List Candidates</h2>
+    <button onclick="listCandidates()">List Candidates</button>
+    <div class="output" id="listCandidatesOutput"></div>
+  </div>
+
+  <!-- View Results -->
+  <div class="container">
+    <h2>View Results</h2>
+    <button onclick="viewResults()">View Results</button>
+    <div class="output" id="resultsOutput"></div>
+  </div>
+
+  <script>
+    const apiBase = 'http://localhost:3000';
+
+    async function registerVoter() {
+      const name = document.getElementById('voterName').value;
+      const voterId = document.getElementById('voterId').value;
+
+      const res = await fetch(`${apiBase}/register-voter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, voter_id: voterId })
+      });
+      const data = await res.json();
+      document.getElementById('registerOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function verifyVoter() {
+      const voterId = document.getElementById('verifyVoterId').value;
+
+      const res = await fetch(`${apiBase}/verify-voter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voter_id: voterId })
+      });
+      const data = await res.json();
+      document.getElementById('verifyOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function castVote() {
+      const voterId = document.getElementById('voteVoterId').value;
+      const candidateId = document.getElementById('candidateId').value;
+
+      const res = await fetch(`${apiBase}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voter_id: voterId, candidate_id: candidateId })
+      });
+      const data = await res.json();
+      document.getElementById('voteOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function addCandidate() {
+      const name = document.getElementById('candidateName').value;
+
+      const res = await fetch(`${apiBase}/add-candidate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+      });
+      const data = await res.json();
+      document.getElementById('addCandidateOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function listCandidates() {
+      const res = await fetch(`${apiBase}/list-candidates`);
+      const data = await res.json();
+      document.getElementById('listCandidatesOutput').textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function viewResults() {
+      const res = await fetch(`${apiBase}/results`);
+      const data = await res.json();
+      document.getElementById('resultsOutput').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+
+</body>
+</html>

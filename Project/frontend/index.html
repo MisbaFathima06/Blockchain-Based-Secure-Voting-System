@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Voting Application</h1>
+    </header>
+
+    <section id="registerSection">
+        <h2>Register to Vote</h2>
+        <form id="registerForm">
+            <label for="voter_id">Voter ID:</label>
+            <input type="text" id="voter_id" name="voter_id" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </section>
+
+    <section id="candidatesSection" style="display: none;">
+        <h2>Choose a Candidate</h2>
+        <div id="candidatesList"></div>
+        <button id="submitVoteButton" style="display: none;">Vote</button>
+    </section>
+
+    <section id="resultsSection" style="display: none;">
+        <h2>Results</h2>
+        <div id="results"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
